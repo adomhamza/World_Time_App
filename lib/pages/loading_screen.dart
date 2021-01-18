@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
+import 'package:world_time/services/world_time.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -8,32 +7,35 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  void getTime() async {
-    Response response =
-        await get('http://worldtimeapi.org/api/timezone/Africa/Accra');
-    Map time = jsonDecode(response.body);
-    //print(time);
-    String datetime = time['datetime'];
-    String offset = time['utc_offset'].substring(1, 3);
-    // print(datetime);
-    // print(offset);
-
-    DateTime now = DateTime.parse(datetime);
-    now = now.add(Duration(hours: int.parse(offset)));
-    print(now);
+  String time = 'loading...';
+  void setUpWorldTime() async {
+    try {
+      WorldTime instance =
+          WorldTime(location: 'Accra', flag: 'gh.png', url: 'Africa/Accra/');
+      await instance.getTime();
+      print(instance.time);
+      setState(() {
+        time = instance.time;
+      });
+    } catch (e) {
+      print('caught error in loading_screen: $e');
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    getTime();
+    setUpWorldTime();
     //print('hey there');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text('Loading Screen'),
+      body: Padding(
+        padding: const EdgeInsets.all(50.0),
+        child: Text(time),
+      ),
     );
   }
 }
