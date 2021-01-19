@@ -7,15 +7,15 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
-  String time = 'loading...';
   void setUpWorldTime() async {
     try {
       WorldTime instance =
           WorldTime(location: 'Accra', flag: 'gh.png', url: 'Africa/Accra/');
       await instance.getTime();
-      print(instance.time);
-      setState(() {
-        time = instance.time;
+      Navigator.pushReplacementNamed(context, '/home', arguments: {
+        'location': instance.location,
+        'flag': instance.flag,
+        'time': instance.time,
       });
     } catch (e) {
       print('caught error in loading_screen: $e');
@@ -26,7 +26,6 @@ class _LoadingState extends State<Loading> {
   void initState() {
     super.initState();
     setUpWorldTime();
-    //print('hey there');
   }
 
   @override
@@ -34,7 +33,7 @@ class _LoadingState extends State<Loading> {
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(50.0),
-        child: Text(time),
+        child: Text('Loading...'),
       ),
     );
   }

@@ -6,24 +6,13 @@ class ChooseLocation extends StatefulWidget {
 }
 
 class _ChooseLocationState extends State<ChooseLocation> {
-  int count = 0;
-  void getData() {
-    Future.delayed(Duration(seconds: 3), () {
-      print('object');
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    print('initState function ran');
-    getData();
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build function ran');
-
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
